@@ -2,6 +2,7 @@ import os
 import time
 from typing import AsyncGenerator, List, Optional
 from datetime import datetime
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Depends, HTTPException, status, Query, Path, Body, Request
 from fastapi.responses import JSONResponse
@@ -44,7 +45,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 # Modern Context Manager for managing FastAPI lifecycle startup/shutdown events
-from contextlib import asynccontextmanager
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
