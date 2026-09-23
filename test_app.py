@@ -1,7 +1,6 @@
-def myfunc():
-  x
-  x = "fantastic"
+r = range(1.5, 10.5)  # بيولّد أرقام من 1 لـ 9
 
-myfunc()
-
-print("Python is " + x)
+# الـ range نفسها Subscriptable وتدعم []
+print(r[0])  # هيطبع: 1 (أول عنصر)
+print(r[2])  # هيطبع: 3 (العنصر رقم 3 في السلسلة)
+print(r[8]) # هيطبع: 9 (آخر عنصر)
