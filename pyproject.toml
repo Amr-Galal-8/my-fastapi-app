@@ -1,24 +1,50 @@
 [project]
-name = "my-fastapi-app"
-version = "0.1.0"
-description = "Add your description here"
+name = "infinity-company-api"
+version = "1.0.0"
+description = "A production-minded FastAPI backend for Infinity, a hardware and software company."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13,<3.15"
 dependencies = [
-    "alembic>=1.18.5",
-    "asyncpg>=0.31.0",
-    "email-validator>=2.3.0",
-    "fastapi>=0.139.0",
-    "psycopg2-binary>=2.9.12",
-    "pydantic-settings>=2.14.2",
-    "python-dotenv>=1.2.2",
-    "sqlalchemy>=2.0.51",
-    "uvicorn[standard]>=0.49.0",
+    "alembic>=1.18,<2",
+    "asyncpg>=0.31,<1",
+    "cryptography>=46,<47",
+    "email-validator>=2.3,<3",
+    "fastapi>=0.139,<1",
+    "httpx>=0.28,<1",
+    "pydantic-settings>=2.14,<3",
+    "pwdlib[argon2]>=0.3,<1",
+    "pyjwt>=2.10,<3",
+    "python-multipart>=0.0.20,<1",
+    "sqlalchemy>=2.0.51,<2.1",
+    "uvicorn[standard]>=0.49,<1",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28.1",
-    "pytest>=9.1.1",
-    "ruff>=0.15.20",
+    "aiosqlite>=0.21,<1",
+    "httpx2>=2.13.1",
+    "pytest>=9.1,<10",
+    "pytest-asyncio>=1.3,<2",
+    "ruff>=0.15,<1",
 ]
+
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "double"

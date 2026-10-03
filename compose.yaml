@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-infinity}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-infinity_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-infinity}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - infinity_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-infinity} -d ${POSTGRES_DB:-infinity}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-infinity}:${POSTGRES_PASSWORD:-infinity_dev_password}@db:5432/${POSTGRES_DB:-infinity}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  infinity_postgres_data:
